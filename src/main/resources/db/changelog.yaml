@@ -1,0 +1,158 @@
+databaseChangeLog:
+  - changeSet:
+        id: 1
+        author: AndreyTarasov
+        preConditions:
+          - onFail: CONTINUE
+          - not:
+              - tableExists:
+                  tableName: storage
+        changes:
+          - createTable:
+              tableName: storage
+              ifNotExist: true
+              schemaName: public
+              columns:
+                - column:
+                    name: id
+                    type: int
+                    constraints:
+                      primaryKey: true
+                - column:
+                    name: name
+                    type: varchar2(100)
+                    constraints:
+                      nullable: false
+  - changeSet:
+      id: 2
+      author: AndreyTarasov
+      preConditions:
+        - onFail: CONTINUE
+        - not:
+            - tableExists:
+                tableName: product
+      changes:
+        - createTable:
+            tableName: product
+            ifNotExist: true
+            schemaName: public
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: vendor_code
+                  type: varchar2(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar2(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_buying_price
+                  type: float
+              - column:
+                  name: last_selling_price
+                  type: float
+  - changeSet:
+      id: 3
+      author: AndreyTarasov
+      preConditions:
+        - onFail: CONTINUE
+        - not:
+            - tableExists:
+                tableName: storage_product
+      changes:
+        - createTable:
+            tableName: storage_product
+            ifNotExist: true
+            schemaName: public
+            columns:
+              - column:
+                  name: storage_id
+                  type: int
+                  constraints:
+                    primaryKey: true
+                    foreignKeyName: fk_storage
+                    references: storage(id)
+              - column:
+                  name: product_id
+                  type: int
+                  constraints:
+                    primaryKey: true
+                    foreignKeyName: fk_product
+                    references: product(id)
+              - column:
+                  name: quantity
+                  type: int
+  - changeSet:
+      id: 4
+      author: AndreyTarasov
+      preConditions:
+        - onFail: CONTINUE
+        - not:
+            - tableExists:
+                tableName: document
+      changes:
+        - createTable:
+            tableName: document
+            ifNotExist: true
+            schemaName: public
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: type
+                  type: varchar2(30)
+              - column:
+                  name: document
+                  type: varchar2(1000)
+  - changeSet:
+      id: 5
+      author: AndreyTarasov
+      preConditions:
+        - onFail: CONTINUE
+        - not:
+            - sequenceExists:
+                sequenceName: product_id_seq
+      changes:
+        - createSequence:
+            sequenceName: product_id_seq
+            schemaName: public
+            startValue: 3
+            incrementBy: 1
+  - changeSet:
+      id: 6
+      author: AndreyTarasov
+      preConditions:
+        - onFail: CONTINUE
+        - not:
+            - sequenceExists:
+                sequenceName: storage_id_seq
+      changes:
+        - createSequence:
+            sequenceName: storage_id_seq
+            schemaName: public
+            startValue: 3
+            incrementBy: 1
+  - changeSet:
+      id: 7
+      author: AndreyTarasov
+      preConditions:
+        - onFail: CONTINUE
+        - not:
+            - sequenceExists:
+                sequenceName: document_id_seq
+      changes:
+        - createSequence:
+            sequenceName: document_id_seq
+            schemaName: public
+            startValue: 1
+            incrementBy: 1

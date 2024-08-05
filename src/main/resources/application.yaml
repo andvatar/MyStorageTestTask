@@ -1,0 +1,25 @@
+app:
+  host-url: http://localhost:8080
+
+spring:
+  init:
+    mode: never
+  jpa:
+    show-sql: true
+    open-in-view: false
+
+    hibernate:
+      ddl-auto: validate
+
+    properties:
+      hibernate:
+        format_sql: true
+        enable_lazy_load_no_trans: true
+
+  datasource:
+    url: jdbc:postgresql://localhost:5433/myStorage
+    username: postgres
+    password: postgres
+
+  liquibase:
+    changeLog: "classpath:db/changelog.yaml"
